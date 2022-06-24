@@ -1,9 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class lab6 {
 
@@ -12,11 +9,30 @@ public class lab6 {
         Scanner reader = new Scanner(new FileReader(file));
 
         //create your map
-
+        Map<String, Integer> frequency = new HashMap<>();
         while(reader.hasNext())
         {
             String word = reader.next();
+//            System.out.println(word);
             //Implement
+            if(!frequency.containsKey(word)) {
+                frequency.put(word.toLowerCase(), 1);
+            } else {
+                int old_count =  frequency.get(word);
+                old_count++;
+                frequency.replace(word, old_count);
+
+            }
+        }
+
+        frequency.keySet();
+
+        ArrayList<String> sortedKeys = new ArrayList<>(frequency.keySet());
+        Collections.sort(sortedKeys);
+        for (String name: sortedKeys) {
+//            String key = name.toString();
+//            String value = frequency.get(name).toString();
+            System.out.println(name + ' ' + frequency.get(name));
         }
 
         reader.close();
@@ -27,14 +43,20 @@ public class lab6 {
         Scanner reader = new Scanner(new FileReader(file));
 
         //create your hashset
+
+        HashSet<String> words = new HashSet<>();
+        int counter = 0;
+
         while(reader.hasNext())
         {
             String word = reader.next();
             //Implement
+            words.add(word);
+            counter++;
         }
-
         reader.close();
-        return someBool;
+
+        return counter == words.size();
 
     }
 
@@ -75,8 +97,8 @@ public class lab6 {
     public static void main(String[] args) throws FileNotFoundException
     {
         q1("love.txt");
-        System.out.println(q2("q2input.txt.txt"));
-        q3("q3test.txt.txt");
+//        System.out.println(q2("q2input.txt.txt"));
+//        q3("q3test.txt.txt");
     }
 
 }
