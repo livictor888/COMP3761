@@ -18,23 +18,17 @@ public class lab6 {
             if(!frequency.containsKey(word)) {
                 frequency.put(word.toLowerCase(), 1);
             } else {
-                int old_count =  frequency.get(word);
-                old_count++;
-                frequency.replace(word, old_count);
+                int count =  frequency.get(word);
+                frequency.replace(word, count++);
 
             }
         }
-
         frequency.keySet();
-
         ArrayList<String> sortedKeys = new ArrayList<>(frequency.keySet());
         Collections.sort(sortedKeys);
         for (String name: sortedKeys) {
-//            String key = name.toString();
-//            String value = frequency.get(name).toString();
             System.out.println(name + ' ' + frequency.get(name));
         }
-
         reader.close();
     }
 
@@ -42,20 +36,16 @@ public class lab6 {
     {
         Scanner reader = new Scanner(new FileReader(file));
 
-        //create your hashset
-
         HashSet<String> words = new HashSet<>();
         int counter = 0;
 
         while(reader.hasNext())
         {
             String word = reader.next();
-            //Implement
             words.add(word);
             counter++;
         }
         reader.close();
-
         return counter == words.size();
 
     }
@@ -64,10 +54,10 @@ public class lab6 {
     {
         Scanner reader = new Scanner(new FileReader(file));
 
-        //create your other variables (sets, etc)
-
         int keyWordsCount = reader.nextInt();
+        String[] keywords = new String[keyWordsCount];
         int excuseCount = reader.nextInt();
+        HashMap<String, Integer> excusesAndKeywordCounts = new HashMap<>();
 
         // skip first line with numbers
         reader.nextLine();
@@ -75,19 +65,40 @@ public class lab6 {
         //read keywords
         for(int i = 0; i < keyWordsCount; i++)
         {
-            //read keywords e.g. datatype.add(reader.nextLine())
+            keywords[i] = reader.nextLine();
         }
 
-        //evaluate excuses
-        for(int i = 0; i < excuseCount; i++)
+        //Add keyword counts and excuses to hashmap
+        for (int i = 0; i < excuseCount; i++)
         {
             String excuse = reader.nextLine();
-            String excuseWords[] = excuse.split(" ");
-
-            //Implement
+            excusesAndKeywordCounts.put(excuse, 0);
         }
 
+        for (String keyword: keywords) {
+            for (Map.Entry<String, Integer> entry : excusesAndKeywordCounts.entrySet()) {
+                String removedOccurrences = entry.getKey().replace(keyword, "");
+                int numberOccurrences = (entry.getKey().length() - removedOccurrences.length()) / keyword.length();
+                if (numberOccurrences != 0) {
+                    excusesAndKeywordCounts.merge(entry.getKey(), numberOccurrences, Integer::sum);
+                }
+            }
+        }
+
+        int maxKeywordOccurrences = Collections.max(excusesAndKeywordCounts.values());
+        ArrayList<String> maxKeywordExcuses = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : excusesAndKeywordCounts.entrySet()) {
+            if (entry.getValue() == maxKeywordOccurrences) {
+                maxKeywordExcuses.add(entry.getKey());
+            }
+        }
+
+        Collections.sort(maxKeywordExcuses);
+
         //Print max excuses
+        for (String excuse : maxKeywordExcuses) {
+            System.out.println(excuse);
+        }
 
         reader.close();
 
@@ -97,8 +108,8 @@ public class lab6 {
     public static void main(String[] args) throws FileNotFoundException
     {
         q1("love.txt");
-//        System.out.println(q2("q2input.txt.txt"));
-//        q3("q3test.txt.txt");
+        System.out.println(q2("q2input.txt"));
+        q3("q3test.txt");
     }
 
 }
