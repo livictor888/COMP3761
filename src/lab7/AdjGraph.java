@@ -14,18 +14,18 @@ public class AdjGraph {
     }
 
     public boolean isDirected() {
-        return directed;
+        return this.directed;
     }
 
     public void setDirected() {
-        directed = true;
+        this.directed = true;
     }
 
     public String toString() {
         String result = "";
         for (int[] row : matrix) {
-            for (int anInt : row) {
-                result = result.concat(anInt + " ");
+            for (int matrixValue : row) {
+                result = result.concat(matrixValue + " ");
             }
             result = result.concat("\n");
         }
@@ -61,8 +61,8 @@ public class AdjGraph {
     public int outDegree(int vert) {
         int out = 0;
 
-        for (int col = 0; col < matrix[vert].length; col++) {
-            if (matrix[vert][col] == 1) {
+        for (int column = 0; column < matrix[vert].length; column++) {
+            if (matrix[vert][column] == 1) {
                 out++;
             }
         }
